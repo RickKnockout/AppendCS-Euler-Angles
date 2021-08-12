@@ -1,0 +1,55 @@
+! --------------------------------CS Euler Angles----------------------------------------
+
+! This macro gets Euler angles based for each CS, then appends those values to the end of CS names or pops up a message box showing the values.
+! I made this for myself, maybe you'll find use of it.
+! As a side note, it seems Gibbs macro language still evaluates an expression in an "if" statement even if the result is false.
+! For instance, it can be:
+! if X<>0 then Z = Y/X.
+! X=0 will still throw a "divide by zero" error on this line. It's still evaluating the Z = Y/X command.
+! It was a bit of a hassle to deal with this. If there's a way to fix that, let me know. I ended up using "goto" to work around it.
+
+
+! Error Checking
+! ---------------
+check part_open, "You must have a part open to run this macro."
+
+! Get Info, Declare Global Vars
+! ------------
+get_cs_list
+global inum
+global lastCS, thisCS, MatCS(12)
+global pp1, pp2, rr1, rr2, vv1, xx1, yy1, yy2, ! for math
+global pitch, roll, yaw, rpy ! for more math
+global counter
+counter = 0
+global r11, r12, r13 ! variables for rotation matrix
+global r21, r22, r23 
+global r31, r32, r33 					
+
+lastCS=last_cs_number
+iNum=number_of_css
+thisCS=current_cs_number
+
+if inum<2 then stop "Not enough CS"
+
+! Ask some questions
+YESNO "All CS?", YN1
+YESNO "Include values equal to 0?", YN0
+
+SET_UNDO CS_MOD
+FOR i = 1 TO inum
+n = next_cs_number
+thisCS=current_cs_number
+GET_CS_MATRIX n, MatCS, 1
+GET_CS_NAME n, cs$
+
+if YN1 = 0 then if thisCS <> n then goto loop ! If they don't want to append to all, and the CS number doesn't match, then skip
+
+:doit
+call "subs\doMath.mac"
+call "subs\appendText.mac"
+
+:loop
+next i
+update_cs_window
+:end

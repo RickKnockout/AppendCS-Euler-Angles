@@ -1,0 +1,113 @@
+r11 = MatCS(1)
+r12 = MatCS(2)
+r13 = MatCS(3)
+r21 = MatCS(5)
+r22 = MatCS(6)
+r23 = MatCS(7)
+r31 = MatCS(9)
+r32 = MatCS(10)
+r33 = MatCS(11)
+
+if r31 <> 1 then if r31 <> -1 then goto c1
+goto c2
+:c1
+pp1 = -1*asin(r31)
+pp2 = pi - pp1
+yy1 = r32/cos(pp1)
+xx1 = r33/cos(pp1)
+if xx1 = 0 then goto sp1
+if xx1 > 0 then rr1 = atan(yy1/xx1)
+if xx1 < 0 then rr1 = (atan(yy1/xx1))+pi
+goto sp2
+
+:sp1
+if yy1 = 0 then goto sp2
+if yy1 > 0 then rr1 = pi/2-atan(xx1/yy1)
+if yy1 < 0 then rr1 = -(pi/2)-atan(xx1/yy1)
+
+:sp2
+if xx1=0 then if yy1=0 then stop "Undefined"
+    yy1 = r32/cos(pp2)
+    xx1 = r33/cos(pp2)
+    if xx1 = 0 then goto sr1
+    if xx1 > 0 then rr2 = atan(yy1/xx1)
+    if xx1 < 0 then rr2 = (atan(yy1/xx1))+pi
+    goto sr2
+
+:sr1
+    if yy1 = 0 then goto sr2
+if yy1 > 0 then rr2 = pi/2-atan(xx1/yy1)
+if yy1 < 0 then rr2 = -(pi/2)-atan(xx1/yy1)
+
+:sr2
+if xx1=0 then if yy1=0 then stop "Undefined"
+    yy1 = r21/cos(pp1)
+    xx1 = r11/cos(pp1)
+    if xx1 = 0 then goto sy1
+    if xx1 > 0 then yy1 = atan(yy1/xx1)
+    if xx1 < 0 then yy1 = (atan(yy1/xx1))+pi
+    goto sy2
+
+:sy1
+if yy1 > 0 then yy1 = pi/2-atan(xx1/yy1)
+if yy1 < 0 then yy1 = -(pi/2)-atan(xx1/yy1)
+
+:sy2
+if xx1=0 then if yy1=0 then stop "Undefined"
+    pitch = pp1
+    roll = rr1
+    yaw = yy1
+goto next
+
+:c2
+yaw = 0
+if R31 = -1 then goto c3
+pitch = -pi/2
+yy1 = -1*r12
+xx1 = -1*r13
+if xx1 = 0 then goto sc10
+if xx1 < 0 then vv1 = (atan(yy1/xx1))+pi
+if xx1 > 0 then vv1 = atan(yy1/xx1)
+goto sc11
+
+:sc10
+if yy1 > 0 then vv1 = pi/2-atan(xx1/yy1)
+if yy1 < 0 then vv1 = -(pi/2)-atan(xx1/yy1)
+
+:sc11
+if xx1=0 then if yy1=0 then stop "Undefined"
+roll = -1*yaw + vv1
+goto next
+
+:c3
+pitch = pi/2
+yy1 = r12
+xx1 = r13
+if xx1 = 0 then goto sc12
+if xx1 > 0 then vv1 = atan(yy1/xx1)
+if xx1 < 0 then vv1 = (atan(yy1/xx1))+pi
+goto sc13
+
+:sc12
+if yy1 > 0 then vv1 = pi/2-atan(xx1/yy1)
+if yy1 < 0 then vv1 = -(pi/2)-atan(xx1/yy1)
+
+:sc13
+if xx1=0 then if yy1=0 then stop "Undefined"
+roll = yaw + vv1
+goto next
+
+:next
+roll = roll*180/pi
+pitch = pitch*180/pi
+yaw = yaw*180/pi
+rpy = roll + pitch + yaw
+if roll > 180 then roll = roll - 360
+if roll < -180 then roll = roll + 360
+if roll = -180 then roll = 180
+if pitch > 180 then pitch = pitch - 360
+if pitch < -180 then pitch = pitch + 360
+if pitch = -180 then pitch = 180
+if yaw > 180 then yaw = yaw - 360
+if yaw < -180 then yaw = yaw + 360
+if yaw = -180 then yaw = 180

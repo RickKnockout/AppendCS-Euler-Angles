@@ -1,0 +1,23 @@
+roll$ = format$(roll, "###0.##")
+pitch$ = format$(pitch, "###0.##")
+yaw$ = format$(yaw, "###0.##")
+ 
+b0$ = "CS: %n: %cs$"
+b1$ = "A%roll$ "
+b2$ = "B%pitch$ "
+b3$ = "C%yaw$ "
+
+! Append to CS
+! -------------
+if YN0=1 then goto labelAll
+if roll <> 0 then cs$ = cs$ + " " + b1$
+if pitch <> 0 then cs$ = cs$ + " " + b2$
+if yaw <> 0 then cs$ = cs$ + " " + b3$
+goto next2
+
+:labelAll
+cs$ = cs$ + " " + b1$ + " " + b2$ + " " + b3$
+
+:next2
+!if YN1 = 1 then 
+SET_CS_NAME n, cs$
